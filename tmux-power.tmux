@@ -129,7 +129,8 @@ if "$show_web_reachable"; then
     RS=" #{web_reachable_status} $RS"
 fi
 
-RS=" #[fg=$TC,bg=$BG] $cpu_icon  #{sysstat_cpu} #[fg=$TC,bg=$BG] $mem_icon  #{sysstat_mem} $RS"
+RS=" #[fg=$G07]$left_arrow_icon#[fg=$TC,bg=$G07] $mem_icon  #{sysstat_mem} $RS"
+RS=" #[fg=$G05]$left_arrow_icon#[fg=$TC,bg=$G05] $cpu_icon  #{sysstat_cpu} $RS"
 
 if [[ $prefix_highlight_pos == 'R' || $prefix_highlight_pos == 'LR' ]]; then
     RS="#{prefix_highlight}$RS"

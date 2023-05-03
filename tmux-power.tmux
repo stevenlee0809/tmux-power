@@ -27,6 +27,8 @@ session_icon="$(tmux_get '@tmux_power_session_icon' '')"
 user_icon="$(tmux_get '@tmux_power_user_icon' '')"
 time_icon="$(tmux_get '@tmux_power_time_icon' '')"
 date_icon="$(tmux_get '@tmux_power_date_icon' '')"
+cpu_icon="$(tmux_get '@tmux_power_cpu_icon' '')"
+mem_icon="$(tmux_get '@tmux_power_mem_icon' '')"
 show_upload_speed="$(tmux_get @tmux_power_show_upload_speed false)"
 show_download_speed="$(tmux_get @tmux_power_show_download_speed false)"
 show_web_reachable="$(tmux_get @tmux_power_show_web_reachable false)"
@@ -34,7 +36,7 @@ prefix_highlight_pos=$(tmux_get @tmux_power_prefix_highlight_pos)
 time_format=$(tmux_get @tmux_power_time_format '%T')
 date_format=$(tmux_get @tmux_power_date_format '%F')
 # short for Theme-Colour
-TC=$(tmux_get '@tmux_power_theme' 'gold')
+TC=$(tmux_get '@tmux_power_theme' 'green')
 case $TC in
     'gold' )
         TC='#ffb86c'
@@ -126,9 +128,13 @@ fi
 if "$show_web_reachable"; then
     RS=" #{web_reachable_status} $RS"
 fi
+
+RS=" #[fg=$TC,bg=$BG] $cpu_icon  #{sysstat_cpu} #[fg=$TC,bg=$BG] $mem_icon  #{sysstat_mem} $RS"
+
 if [[ $prefix_highlight_pos == 'R' || $prefix_highlight_pos == 'LR' ]]; then
     RS="#{prefix_highlight}$RS"
 fi
+
 tmux_set status-right "$RS"
 
 # Window status
@@ -148,7 +154,8 @@ tmux_set window-status-current-statys "fg=$TC,bg=$BG"
 tmux_set pane-border-style "fg=$G07,bg=default"
 
 # Active pane border
-tmux_set pane-active-border-style "fg=$TC,bg=$BG"
+#tmux_set pane-active-border-style "fg=$TC,bg=$BG"
+tmux_set pane-active-border-style "fg=$TC"
 
 # Pane number indicator
 tmux_set display-panes-colour "$G07"

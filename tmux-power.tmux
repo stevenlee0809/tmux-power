@@ -29,6 +29,7 @@ time_icon="$(tmux_get '@tmux_power_time_icon' '')"
 date_icon="$(tmux_get '@tmux_power_date_icon' '')"
 cpu_icon="$(tmux_get '@tmux_power_cpu_icon' '')"
 mem_icon="$(tmux_get '@tmux_power_mem_icon' '')"
+thermal_icon="$(tmux_get '@tmux_power_thermal_icon' '')"
 show_upload_speed="$(tmux_get @tmux_power_show_upload_speed false)"
 show_download_speed="$(tmux_get @tmux_power_show_download_speed false)"
 show_web_reachable="$(tmux_get @tmux_power_show_web_reachable false)"
@@ -130,7 +131,7 @@ if "$show_web_reachable"; then
 fi
 
 RS=" #[fg=$G07]$left_arrow_icon#[fg=$TC,bg=$G07] $mem_icon  #{sysstat_mem} $RS"
-RS=" #[fg=$G05]$left_arrow_icon#[fg=$TC,bg=$G05] $cpu_icon  #{sysstat_cpu} $RS"
+RS=" #[fg=$G05]$left_arrow_icon#[fg=$TC,bg=$G05] $thermal_icon#{temp_cpu}  $cpu_icon  #{sysstat_cpu} $RS"
 
 if [[ $prefix_highlight_pos == 'R' || $prefix_highlight_pos == 'LR' ]]; then
     RS="#{prefix_highlight}$RS"

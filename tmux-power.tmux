@@ -24,11 +24,12 @@ left_arrow_icon=$(tmux_get '@tmux_power_left_arrow_icon' '')
 icon_sep=$(tmux_get '@tmux_power_left_arrow_icon' '█')
 upload_speed_icon=$(tmux_get '@tmux_power_upload_speed_icon' '')
 download_speed_icon=$(tmux_get '@tmux_power_download_speed_icon' '')
-session_icon="$(tmux_get '@tmux_power_session_icon' '')"
-# user_icon="$(tmux_get '@tmux_power_user_icon' '')"
-user_icon="$(tmux_get '@tmux_power_user_icon' '')"
+session_icon="$(tmux_get '@tmux_power_session_icon' '')"
+user_icon="$(tmux_get '@tmux_power_user_icon' '')"
+# user_icon="$(tmux_get '@tmux_power_user_icon' '')"
 # user_icon="$(tmux_get '@tmux_power_user_icon' '🎃')"
 time_icon="$(tmux_get '@tmux_power_time_icon' '')"
+topuser_icon="$(tmux_get '@tmux_power_topuser_icon' '󰇴')"
 date_icon="$(tmux_get '@tmux_power_date_icon' '')"
 cpu_icon="$(tmux_get '@tmux_power_cpu_icon' '󰓅')"
 mem_icon="$(tmux_get '@tmux_power_mem_icon' '󰍛')"
@@ -39,6 +40,11 @@ show_web_reachable="$(tmux_get @tmux_power_show_web_reachable false)"
 prefix_highlight_pos=$(tmux_get @tmux_power_prefix_highlight_pos)
 time_format=$(tmux_get @tmux_power_time_format '%T')
 date_format=$(tmux_get @tmux_power_date_format '%F')
+
+CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+chmod +x "$CURRENT_DIR/cpu.sh"
+chmod +x "$CURRENT_DIR/cpu_top_user.sh"
+chmod +x "$CURRENT_DIR/mem.sh"
 
 # --> Catppuccin (Mocha)
 thm_bg="#1e1e2e"
@@ -110,7 +116,7 @@ FG="$G10"
 BG="$thm_bg"
 
 # Status options
-tmux_set status-interval 1
+tmux_set status-interval 3
 tmux_set status on
 
 # Basic status bar colors
@@ -151,8 +157,9 @@ tmux_set status-left "$LS"
 tmux_set status-right-length 150
 RS="#[fg=$thm_blue,bg=$thm_bg]$left_arrow_icon#[fg=$thm_black,bg=$thm_blue]$date_icon #[fg=$thm_fg,bg=$thm_gray] $date_format#[fg=$thm_gray,bg=$thm_bg]$right_arrow_icon"
 RS="#[fg=$thm_green]$left_arrow_icon#[fg=$thm_black,bg=$thm_green]$time_icon #[fg=$thm_fg,bg=$thm_gray] $time_format#[fg=$thm_gray,bg=$thm_bg]$right_arrow_icon $RS"
-RS=" #[fg=$thm_pink]$left_arrow_icon#[fg=$thm_bg,bg=$thm_pink]$mem_icon #[fg=$thm_fg,bg=$thm_gray] #{sysstat_mem}#[fg=$thm_gray,bg=$thm_bg]$right_arrow_icon $RS"
-RS=" #[fg=$thm_yellow]$left_arrow_icon#[fg=$thm_bg,bg=$thm_yellow]$cpu_icon #[fg=$thm_fg,bg=$thm_gray] #{sysstat_cpu}#[fg=$thm_gray,bg=$thm_bg]$right_arrow_icon$RS"
+RS=" #[fg=$thm_pink]$left_arrow_icon#[fg=$thm_bg,bg=$thm_pink]$mem_icon #[fg=$thm_fg,bg=$thm_gray] #($CURRENT_DIR/mem.sh)#[fg=$thm_gray,bg=$thm_bg]$right_arrow_icon $RS"
+RS=" #[fg=$thm_yellow]$left_arrow_icon#[fg=$thm_bg,bg=$thm_yellow]$cpu_icon #[fg=$thm_fg,bg=$thm_gray] #($CURRENT_DIR/cpu.sh)#[fg=$thm_gray,bg=$thm_bg]$right_arrow_icon$RS"
+RS=" #[fg=$thm_magenta]$left_arrow_icon#[fg=$thm_bg,bg=$thm_magenta]$topuser_icon #[fg=$thm_fg,bg=$thm_gray] #($CURRENT_DIR/cpu_top_user.sh)#[fg=$thm_gray,bg=$thm_bg]$right_arrow_icon$RS"
 
 if [[ $prefix_highlight_pos == 'R' || $prefix_highlight_pos == 'LR' ]]; then
     RS="#{prefix_highlight}$RS"
